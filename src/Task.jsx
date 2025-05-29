@@ -5,9 +5,7 @@ function Task(props){
 
     return (
         <div>
-            <span>
                 {props.title}
-            </span>
         </div>
     )
 }
