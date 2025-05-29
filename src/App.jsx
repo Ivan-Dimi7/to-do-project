@@ -15,6 +15,11 @@ function App() {
         }
     }
 
+    function deleteTask(index) { //todo use IDs instead of indexes
+        const newTasks = tasks.filter((_,i) => i !== index);
+        setTasks(newTasks);
+    }
+
 
     return (
         <div>
@@ -24,7 +29,12 @@ function App() {
             <ol>
                 {tasks.map((task, index) => (
                    <li>
-                       <Task key={index} title={task.title} />
+                       <span>
+                           <Task key={index} title={task.title} />
+                           <button onClick={() => deleteTask(index)}>Delete</button>
+
+                       </span>
+
                    </li>
                 ))}
 
