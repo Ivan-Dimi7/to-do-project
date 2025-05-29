@@ -32,6 +32,21 @@ function App() {
         }
     }
 
+    function moveTaskUp(index) {
+        if(index > 0){
+            const newTasks = [...tasks];
+            [newTasks[index], newTasks[index - 1]] = [newTasks[index - 1], newTasks[index]];
+            setTasks(newTasks);
+        }
+    }
+
+    function moveTaskDown(index) {
+        if(index < tasks.length-1){
+            const newTasks = [...tasks];
+            [newTasks[index], newTasks[index + 1]] = [newTasks[index + 1], newTasks[index]];
+            setTasks(newTasks);
+        }
+    }
 
 
 
@@ -47,6 +62,8 @@ function App() {
                            <Task key={index} title={task.title} />
                            <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(index)}/>
                            <button onClick={() => deleteTask(index)}>Delete</button>
+                           <button onClick={() => moveTaskUp(index)}>UP</button>
+                           <button onClick={() => moveTaskDown(index)}>DOWN</button>
 
                        </span>
 
