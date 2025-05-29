@@ -16,9 +16,23 @@ function App() {
     }
 
     function deleteTask(index) { //todo use IDs instead of indexes
-        const newTasks = tasks.filter((_,i) => i !== index);
-        setTasks(newTasks);
+        if(window.confirm("Are you sure you want to delete?")){
+            const newTasks = tasks.filter((_,i) => i !== index);
+            setTasks(newTasks);
+        }
     }
+
+    function markAsDone(index) {
+        if (!tasks[index].done){
+            if(window.confirm("Once you mark tasks as done it cannot be undone! Are you sure?")){
+                const updatedTasks = [...tasks];
+                updatedTasks[index].done = true;
+                setTasks(updatedTasks);
+            }
+        }
+    }
+
+
 
 
     return (
@@ -31,6 +45,7 @@ function App() {
                    <li>
                        <span>
                            <Task key={index} title={task.title} />
+                           <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(index)}/>
                            <button onClick={() => deleteTask(index)}>Delete</button>
 
                        </span>
