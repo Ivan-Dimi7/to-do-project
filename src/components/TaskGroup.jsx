@@ -30,24 +30,40 @@ function TaskGroup(props){
         }
     }
 
-
-
-    function deleteTask(index) { //todo use IDs instead of indexes
+    function deleteTask(id) {
         if(window.confirm("Are you sure you want to delete?")){
-            const newTasks = tasks.filter((_,i) => i !== index);
-            setTasks(newTasks);
+
+            fetch(`http://localhost:3001/tasks/${id}`, {
+                method: "DELETE"
+            })
+                .then(() => {
+                    const newTasks = tasks.filter(task => task.id !== id);
+                    setTasks(newTasks);
+                });
         }
     }
 
-    function markAsDone(index) {
-        if (!tasks[index].done){
+
+
+    function markAsDone(id) {
+        const task = tasks.find(t => t.id === id);
+        if(task && !task.done) {
             if(window.confirm("Once you mark tasks as done it cannot be undone! Are you sure?")){
-                const updatedTasks = [...tasks];
-                updatedTasks[index].done = true;
-                setTasks(updatedTasks);
+
+                fetch(`http://localhost:3001/tasks/${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ done: true })
+                }).then(() => {
+                    const newTasks = tasks.map(t =>
+                        t.id === id ? {...t, done: true} : t
+                    );
+                    setTasks(newTasks);
+                });
             }
         }
     }
+
 
     function moveTaskUp(index) {
         if(index > 0){
@@ -76,8 +92,8 @@ function TaskGroup(props){
                     <li>
                        <span>
                            <Task key={index} title={task.title} />
-                           <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(index)}/>
-                           <button onClick={() => deleteTask(index)}>Delete</button>
+                           <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(task.id)}/>
+                           <button onClick={() => deleteTask(task.id)}>Delete</button>
                            <button onClick={() => moveTaskUp(index)}>UP</button>
                            <button onClick={() => moveTaskDown(index)}>DOWN</button>
 
