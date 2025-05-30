@@ -1,5 +1,21 @@
 {
-  "users": [],
+  "users": [
+    {
+      "id": "f1a0",
+      "username": "ivan",
+      "password": "1234"
+    },
+    {
+      "id": "d300",
+      "username": "name",
+      "password": "parola"
+    },
+    {
+      "id": "d21c",
+      "username": "a",
+      "password": "parola"
+    }
+  ],
   "taskGroups": [],
   "tasks": [
     {
