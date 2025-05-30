@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import "./Register.css"
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -37,31 +38,36 @@ function Register() {
     };
 
     return (
-        <form onSubmit={registerUser}>
-            <h2>Register</h2>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPass}
-                onChange={(e) => setConfirmPass(e.target.value)}
-                required
-            />
-            <button type="submit">Register</button>
-        </form>
+        <div id="register-form-wrapper">
+            <form id="register-form" onSubmit={registerUser}>
+                <h2 id="register-title">Register</h2>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPass}
+                    onChange={(e) => setConfirmPass(e.target.value)}
+                    required
+                />
+                <button type="submit">REGISTER</button>
+            </form>
+            <p id="login-link">
+                <Link to="/">Already registered? Login here</Link>
+            </p>
+        </div>
     );
 }
 

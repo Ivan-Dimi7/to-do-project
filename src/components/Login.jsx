@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { UserContext } from "../App";
+import "./Login.css"
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -24,24 +25,29 @@ function Login() {
     };
 
     return (
-        <form onSubmit={login}>
-            <h2>Login</h2>
-            <input
-                type="text"
-                placeholder="username"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                required
-            />
-            <input
-                type="password"
-                placeholder="password"
-                value={pass}
-                onChange={e => setPass(e.target.value)}
-                required
-            />
-            <button type="submit">Login</button>
-        </form>
+        <div id="login-form-wrapper">
+            <form onSubmit={login} id="login-form">
+                <h2 id="login-title">Login</h2>
+                <input
+                    type="text"
+                    placeholder="username"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
+                    required
+                />
+                <input
+                    type="password"
+                    placeholder="password"
+                    value={pass}
+                    onChange={e => setPass(e.target.value)}
+                    required
+                />
+                <button type="submit">LOGIN</button>
+            </form>
+            <p id="register-link">
+                <Link to="/register">New user? Register here</Link>
+            </p>
+        </div>
     );
 }
 
