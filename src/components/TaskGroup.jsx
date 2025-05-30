@@ -1,6 +1,10 @@
 import Task from './Task'
 import {useState, useEffect} from "react";
 import { FaArrowUp, FaArrowDown, FaTrash, FaPlus } from 'react-icons/fa';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const MySwal = withReactContent(Swal);
 
 function TaskGroup(props){
     const [tasks, setTasks] = useState([])
@@ -11,61 +15,84 @@ function TaskGroup(props){
             .then(setTasks);
     }, [props.id]);
 
-    function addTask() {
-        const title = prompt('Enter title');
-        if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
+    async function addTask() {
+        const { value: title } = await MySwal.fire({
+            title: 'Enter title',
+            input: 'text',
+            inputValidator: (value) => {
+                return null;
+            },
+            showCancelButton: true,
+        });
+
+        if (title && title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
             const newTask = {
                 title,
                 done: false,
-                taskGroupId: props.id
+                taskGroupId: props.id,
             };
 
-            fetch("http://localhost:3001/tasks", {
-                method: "POST",
+            fetch('http://localhost:3001/tasks', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newTask)
+                body: JSON.stringify(newTask),
             })
-                .then(r => r.json())
-                .then(data => {
-                    setTasks(lastTasks => [...lastTasks, data]);
+                .then((r) => r.json())
+                .then((data) => {
+                    setTasks((lastTasks) => [...lastTasks, data]);
                 });
         } else {
-            alert("Please enter a valid title");
+            await MySwal.fire('Please enter a valid title');
         }
     }
 
-    function deleteTask(id) {
-        if (window.confirm("Are you sure you want to delete?")) {
+
+    async function deleteTask(id) {
+        const result = await MySwal.fire({
+            title: 'Are you sure you want to delete?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+        });
+
+        if (result.isConfirmed) {
             fetch(`http://localhost:3001/tasks/${id}`, {
-                method: "DELETE"
-            })
-                .then(() => {
-                    setTasks(lastTasks => lastTasks.filter(task => task.id !== id));
-                });
+                method: 'DELETE',
+            }).then(() => {
+                setTasks((lastTasks) => lastTasks.filter((task) => task.id !== id));
+            });
         }
     }
 
 
-    function markAsDone(id) {
-        const task = tasks.find(t => t.id === id);
-        if(task && !task.done) {
-            if(window.confirm("Once you mark tasks as done it cannot be undone! Are you sure?")){
 
+    async function markAsDone(id) {
+        const task = tasks.find((t) => t.id === id);
+        if (task && !task.done) {
+            const result = await MySwal.fire({
+                title: 'Once you mark tasks as done it cannot be undone! Are you sure?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+            });
+
+            if (result.isConfirmed) {
                 fetch(`http://localhost:3001/tasks/${id}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ done: true })
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ done: true }),
                 }).then(() => {
-                    const newTasks = tasks.map(t =>
-                        t.id === id ? {...t, done: true} : t
+                    const newTasks = tasks.map((t) =>
+                        t.id === id ? { ...t, done: true } : t
                     );
                     setTasks(newTasks);
                 });
             }
         }
     }
+
 
 
     function moveTaskUp(index) {
@@ -86,7 +113,6 @@ function TaskGroup(props){
 
     return (
         <div>
-            <h2>{props.title}</h2>
             <button onClick={addTask}>Add New Task</button>
             <ol>
                 {tasks.map((task, index) => (
@@ -103,7 +129,6 @@ function TaskGroup(props){
                 ))}
 
             </ol>
-            <p>Created {props.createdAt}</p>
         </div>
     )
 }
