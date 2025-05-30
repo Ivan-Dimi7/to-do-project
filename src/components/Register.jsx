@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 function Register() {
     const [username, setUsername] = useState('');
     const [pass, setPass] = useState('');
     const [confirmPass, setConfirmPass] = useState('');
+    const navigate = useNavigate();
 
     const registerUser = (e) => {
         e.preventDefault();
@@ -24,6 +26,9 @@ function Register() {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(newUser)
                     }).then(res => res.json())
+                        .then(() => {
+                            navigate('/');
+                        });
 
                 } else {
                     alert("Username already exists");
