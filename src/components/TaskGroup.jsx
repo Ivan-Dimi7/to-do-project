@@ -6,13 +6,31 @@ function TaskGroup(props){
 
     function addTask() {
         const title = prompt('Enter title');
-        if (title.trim()) {
-            const newTask = { title: title };
-            setTasks(currTasks => [...currTasks, newTask]);
+
+        if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
+            const newTask = {
+                title: title,
+                done: false
+            };
+
+            fetch("http://localhost:3001/tasks", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newTask)
+            })
+                .then(r => r.json())
+                .then(data => {
+                    const newTasks = [...tasks, data];
+                    setTasks(newTasks);
+                });
         } else {
-            alert("Please enter title");
+            alert("Please enter a valid title");
         }
     }
+
+
 
     function deleteTask(index) { //todo use IDs instead of indexes
         if(window.confirm("Are you sure you want to delete?")){

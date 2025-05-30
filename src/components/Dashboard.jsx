@@ -6,11 +6,12 @@ function Dashboard() {
 
     function addTaskGroup() {
         const title = prompt('Enter title');
-        if (title.trim()) {
+
+        if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
             const newTaskGroup = { title: title };
             setTaskGroups(currTasks => [...currTasks, newTaskGroup]);
         } else {
-            alert("Please enter title");
+            alert("Please enter a valid title");
         }
     }
 
