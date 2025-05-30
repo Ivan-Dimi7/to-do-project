@@ -1,5 +1,6 @@
 import Task from './Task'
 import {useState, useEffect} from "react";
+import { FaArrowUp, FaArrowDown, FaTrash, FaPlus } from 'react-icons/fa';
 
 function TaskGroup(props){
     const [tasks, setTasks] = useState([])
@@ -83,8 +84,6 @@ function TaskGroup(props){
         }
     }
 
-
-
     return (
         <div>
             <h2>{props.title}</h2>
@@ -95,16 +94,16 @@ function TaskGroup(props){
                        <span>
                            <Task title={task.title} />
                            <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(task.id)}/>
-                           <button onClick={() => deleteTask(task.id)}>Delete</button>
-                           <button onClick={() => moveTaskUp(index)}>UP</button>
-                           <button onClick={() => moveTaskDown(index)}>DOWN</button>
-
+                           <button class="deleteBtn" onClick={() => deleteTask(task.id)}> <FaTrash /> </button>
+                           <button class="upAndDownBtns" onClick={() => moveTaskUp(index)}> <FaArrowUp /> </button>
+                           <button class="upAndDownBtns" onClick={() => moveTaskDown(index)}> <FaArrowDown /></button>
                        </span>
 
                     </li>
                 ))}
 
             </ol>
+            <p>Created {props.createdAt}</p>
         </div>
     )
 }

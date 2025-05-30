@@ -6,6 +6,49 @@
       "password": "parola"
     }
   ],
-  "taskGroups": [],
-  "tasks": []
+  "taskGroups": [
+    {
+      "id": "3b08",
+      "title": "aaa",
+      "userId": "81da"
+    },
+    {
+      "id": "d96c",
+      "title": "hghg",
+      "userId": "81da",
+      "createdAt": "2025-05-30T04:31:10.132Z"
+    },
+    {
+      "id": "464e",
+      "title": "aaa",
+      "userId": "81da",
+      "createdAt": "5/30/2025"
+    },
+    {
+      "id": "cf2f",
+      "title": "aaa",
+      "userId": "81da",
+      "createdAt": "5/30/2025"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "f739",
+      "title": "aaa",
+      "done": false,
+      "taskGroupId": "3b08"
+    },
+    {
+      "id": "34ef",
+      "title": "dad",
+      "done": false,
+      "taskGroupId": "d96c"
+    },
+    {
+      "id": "3b38",
+      "title": "gfg",
+      "done": false,
+      "taskGroupId": "d96c"
+    }
+  ]
 }

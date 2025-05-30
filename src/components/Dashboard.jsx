@@ -1,6 +1,8 @@
 import TaskGroup from './TaskGroup';
 import {useEffect, useState, useContext } from "react";
 import { UserContext } from "../App"
+import { FaPlus } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 
 function Dashboard() {
     const [taskGroups, setTaskGroups] = useState([])
@@ -19,7 +21,8 @@ function Dashboard() {
         const title = prompt('Enter title');
 
         if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
-            const newTaskGroup = { title: title, userId: user.id};
+            const newTaskGroup = { title: title, userId: user.id, createdAt: new Date().toLocaleDateString()
+        };
 
             fetch("http://localhost:3001/taskGroups", {
                 method: "POST",
@@ -59,15 +62,15 @@ function Dashboard() {
 
     return (
         <div>
-            <h1>TO-DO LIST</h1>
+            <h1 style={{ textAlign: 'center' }}>TO-DO LIST</h1>
             {taskGroups.map((taskGroup) => (
                 <span key={taskGroup.id}>
-                    <TaskGroup title={taskGroup.title} userId = {user.id} />
-                    <button onClick={() => deleteTaskGroup(taskGroup.id)}>Delete Task Group</button>
+                    <TaskGroup title={taskGroup.title} userId={user.id} id={taskGroup.id} createdAt={taskGroup.createdAt} />
+                    <button class="deleteBtn" onClick={() => deleteTaskGroup(taskGroup.id)}><FaTrash /> </button>
                 </span>
 
             ))}
-            <button onClick={addTaskGroup}>Add New Task Group</button>
+            <button onClick={addTaskGroup}>Add New Task Group  <FaPlus /></button>
 
         </div>
     )
