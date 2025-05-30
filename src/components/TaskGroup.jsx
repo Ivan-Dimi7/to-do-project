@@ -91,9 +91,9 @@ function TaskGroup(props){
             <button onClick={addTask}>Add New Task</button>
             <ol>
                 {tasks.map((task, index) => (
-                    <li>
+                    <li key={task.id}>
                        <span>
-                           <Task key={task.id} title={task.title} />
+                           <Task title={task.title} />
                            <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(task.id)}/>
                            <button onClick={() => deleteTask(task.id)}>Delete</button>
                            <button onClick={() => moveTaskUp(index)}>UP</button>

@@ -1,14 +1,25 @@
 import TaskGroup from './TaskGroup';
-import {useState} from "react";
+import {useEffect, useState, useContext } from "react";
+import { UserContext } from "../App"
 
 function Dashboard() {
     const [taskGroups, setTaskGroups] = useState([])
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        if (user) {
+            fetch(`http://localhost:3001/taskGroups?userId=${user.id}`)
+                .then(res => res.json())
+                .then(setTaskGroups);
+        }
+    }, [user]);
+
 
     function addTaskGroup() {
         const title = prompt('Enter title');
 
         if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
-            const newTaskGroup = { title: title};
+            const newTaskGroup = { title: title, userId: user.id};
 
             fetch("http://localhost:3001/taskGroups", {
                 method: "POST",
@@ -50,10 +61,10 @@ function Dashboard() {
         <div>
             <h1>TO-DO LIST</h1>
             {taskGroups.map((taskGroup) => (
-                <span>
-                           <TaskGroup key={taskGroup.id} id={taskGroup.id} title={taskGroup.title} />
-                           <button onClick={() => deleteTaskGroup(taskGroup.id)}>Delete Task Group</button>
-                       </span>
+                <span key={taskGroup.id}>
+                    <TaskGroup title={taskGroup.title} userId = {user.id} />
+                    <button onClick={() => deleteTaskGroup(taskGroup.id)}>Delete Task Group</button>
+                </span>
 
             ))}
             <button onClick={addTaskGroup}>Add New Task Group</button>

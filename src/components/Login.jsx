@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import {useNavigate} from "react-router-dom";
+import { useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 
 function Login() {
     const [username, setUsername] = useState('');
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
+    const { setUser } = useContext(UserContext);
 
     const login = (e) => {
         e.preventDefault();
@@ -13,6 +15,7 @@ function Login() {
             .then(res => res.json())
             .then(users => {
                 if (users.length > 0) {
+                    setUser(users[0]);
                     navigate("/dashboard");
                 } else {
                     alert('Invalid username or password!!!');
