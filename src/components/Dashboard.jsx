@@ -17,7 +17,7 @@ function Dashboard() {
             })
                 .then(r => r.json())
                 .then(data => {
-                    setTaskGroups(taskGroups => [...taskGroups, data]); // add returned group with id
+                    setTaskGroups(taskGroups => [...taskGroups, data]);
                 });
 
         } else {
@@ -27,14 +27,24 @@ function Dashboard() {
 
 
     function deleteTaskGroup(id) {
-        if(window.confirm("Are you sure you want to delete?")) {
+        if (window.confirm("Are you sure you want to delete?")) {
+            const taskGroup = taskGroups.find(group => group.id === id);
+            if (taskGroup) {
+                taskGroup.tasks.forEach(taskId => {
+                    fetch(`http://localhost:3001/tasks/${taskId}`, { //doesnt work for some reason todo fix later
+                        method: "DELETE"
+                    });
+                });
+            }
+
             fetch(`http://localhost:3001/taskGroups/${id}`, {
                 method: "DELETE"
             }).then(() => {
-                setTaskGroups(currTaskGroups => currTaskGroups.filter(taskGroup => taskGroup.id !== id));
+                setTaskGroups(currTaskGroup => currTaskGroup.filter(group => group.id !== id));
             });
         }
     }
+
 
 
 
@@ -43,7 +53,7 @@ function Dashboard() {
             <h1>TO-DO LIST</h1>
             {taskGroups.map((taskGroup) => (
                 <span>
-                           <TaskGroup key={taskGroup.id} title={taskGroup.title} />
+                           <TaskGroup key={taskGroup.id} id={taskGroup.id} title={taskGroup.title} tasks={taskGroup.tasks} />
                            <button onClick={() => deleteTaskGroup(taskGroup.id)}>Delete Task Group</button>
                        </span>
 

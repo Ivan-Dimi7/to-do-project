@@ -1,8 +1,17 @@
 import Task from './Task'
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 function TaskGroup(props){
     const [tasks, setTasks] = useState([])
+
+    useEffect(() => {
+        fetch("http://localhost:3001/tasks")
+            .then(r => r.json())
+            .then(tasks => {
+                const taskGroupTasks = tasks.filter(t => props.tasks.includes(t.id));
+                setTasks(taskGroupTasks);
+            });
+    }, []);
 
     function addTask() {
         const title = prompt('Enter title');
@@ -24,6 +33,14 @@ function TaskGroup(props){
                 .then(data => {
                     const newTasks = [...tasks, data];
                     setTasks(newTasks);
+
+                    const newTaskGroupTasks = [...tasks.map(t => t.id), data.id];
+
+                    fetch(`http://localhost:3001/taskGroups/${props.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ tasks: newTaskGroupTasks })
+                    });
                 });
         } else {
             alert("Please enter a valid title");
@@ -31,17 +48,25 @@ function TaskGroup(props){
     }
 
     function deleteTask(id) {
-        if(window.confirm("Are you sure you want to delete?")){
-
+        if (window.confirm("Are you sure you want to delete?")) {
             fetch(`http://localhost:3001/tasks/${id}`, {
                 method: "DELETE"
             })
                 .then(() => {
                     const newTasks = tasks.filter(task => task.id !== id);
                     setTasks(newTasks);
+
+                    const newTasksIDs = newTasks.map(t => t.id);
+
+                    fetch(`http://localhost:3001/taskGroups/${props.id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ tasks: newTasksIDs })
+                    });
                 });
         }
     }
+
 
 
 
@@ -91,7 +116,7 @@ function TaskGroup(props){
                 {tasks.map((task, index) => (
                     <li>
                        <span>
-                           <Task key={index} title={task.title} />
+                           <Task key={task.id} title={task.title} />
                            <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(task.id)}/>
                            <button onClick={() => deleteTask(task.id)}>Delete</button>
                            <button onClick={() => moveTaskUp(index)}>UP</button>
