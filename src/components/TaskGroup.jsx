@@ -5,21 +5,18 @@ function TaskGroup(props){
     const [tasks, setTasks] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:3001/tasks")
+        fetch(`http://localhost:3001/tasks?taskGroupId=${props.id}`)
             .then(r => r.json())
-            .then(tasks => {
-                const taskGroupTasks = tasks.filter(t => props.tasks.includes(t.id));
-                setTasks(taskGroupTasks);
-            });
-    }, []);
+            .then(setTasks);
+    }, [props.id]);
 
     function addTask() {
         const title = prompt('Enter title');
-
         if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
             const newTask = {
-                title: title,
-                done: false
+                title,
+                done: false,
+                taskGroupId: props.id
             };
 
             fetch("http://localhost:3001/tasks", {
@@ -31,16 +28,7 @@ function TaskGroup(props){
             })
                 .then(r => r.json())
                 .then(data => {
-                    const newTasks = [...tasks, data];
-                    setTasks(newTasks);
-
-                    const newTaskGroupTasks = [...tasks.map(t => t.id), data.id];
-
-                    fetch(`http://localhost:3001/taskGroups/${props.id}`, {
-                        method: "PATCH",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ tasks: newTaskGroupTasks })
-                    });
+                    setTasks(lastTasks => [...lastTasks, data]);
                 });
         } else {
             alert("Please enter a valid title");
@@ -53,21 +41,10 @@ function TaskGroup(props){
                 method: "DELETE"
             })
                 .then(() => {
-                    const newTasks = tasks.filter(task => task.id !== id);
-                    setTasks(newTasks);
-
-                    const newTasksIDs = newTasks.map(t => t.id);
-
-                    fetch(`http://localhost:3001/taskGroups/${props.id}`, {
-                        method: "PATCH",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ tasks: newTasksIDs })
-                    });
+                    setTasks(lastTasks => lastTasks.filter(task => task.id !== id));
                 });
         }
     }
-
-
 
 
     function markAsDone(id) {

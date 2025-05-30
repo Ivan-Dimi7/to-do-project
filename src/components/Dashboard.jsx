@@ -8,7 +8,7 @@ function Dashboard() {
         const title = prompt('Enter title');
 
         if (title.trim() && /^[a-zA-Z0-9\s]+$/.test(title)) {
-            const newTaskGroup = { title: title, tasks: [] };
+            const newTaskGroup = { title: title};
 
             fetch("http://localhost:3001/taskGroups", {
                 method: "POST",
@@ -28,24 +28,22 @@ function Dashboard() {
 
     function deleteTaskGroup(id) {
         if (window.confirm("Are you sure you want to delete?")) {
-            const taskGroup = taskGroups.find(group => group.id === id);
-            if (taskGroup) {
-                taskGroup.tasks.forEach(taskId => {
-                    fetch(`http://localhost:3001/tasks/${taskId}`, { //doesnt work for some reason todo fix later
+            fetch(`http://localhost:3001/tasks?taskGroupId=${id}`)
+                .then(r => r.json())
+                .then(tasks => {
+                    tasks.forEach(task => {
+                        fetch(`http://localhost:3001/tasks/${task.id}`, {
+                            method: "DELETE" });
+                    });
+
+                    fetch(`http://localhost:3001/taskGroups/${id}`, {
                         method: "DELETE"
+                    }).then(() => {
+                        setTaskGroups(lastTaskGroups => lastTaskGroups.filter(group => group.id !== id));
                     });
                 });
-            }
-
-            fetch(`http://localhost:3001/taskGroups/${id}`, {
-                method: "DELETE"
-            }).then(() => {
-                setTaskGroups(currTaskGroup => currTaskGroup.filter(group => group.id !== id));
-            });
         }
     }
-
-
 
 
     return (
@@ -53,7 +51,7 @@ function Dashboard() {
             <h1>TO-DO LIST</h1>
             {taskGroups.map((taskGroup) => (
                 <span>
-                           <TaskGroup key={taskGroup.id} id={taskGroup.id} title={taskGroup.title} tasks={taskGroup.tasks} />
+                           <TaskGroup key={taskGroup.id} id={taskGroup.id} title={taskGroup.title} />
                            <button onClick={() => deleteTaskGroup(taskGroup.id)}>Delete Task Group</button>
                        </span>
 
