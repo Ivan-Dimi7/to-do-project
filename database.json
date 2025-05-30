@@ -1,6 +1,17 @@
 {
   "users": [],
-  "taskGroups": [],
+  "taskGroups": [
+    {
+      "id": "2bc6",
+      "title": "aaa",
+      "tasks": []
+    },
+    {
+      "id": "b75f",
+      "title": "agag",
+      "tasks": []
+    }
+  ],
   "tasks": [
     {
       "id": "c074",
@@ -51,6 +62,11 @@
       "id": "da46",
       "title": "jjj",
       "done": true
+    },
+    {
+      "id": "e1a3",
+      "title": "ghghg",
+      "done": false
     }
   ]
 }
