@@ -2,6 +2,11 @@ import { useState } from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import "./Register.css"
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
+
 function Register() {
     const [username, setUsername] = useState('');
     const [pass, setPass] = useState('');
@@ -12,7 +17,11 @@ function Register() {
         e.preventDefault();
 
         if (pass !== confirmPass) {
-            alert("Passwords do not match!");
+            MySwal.fire({
+                icon: 'error',
+                title: 'Passwords do not match!',
+            });
+
             return;
         }
 
@@ -32,7 +41,11 @@ function Register() {
                         });
 
                 } else {
-                    alert("Username already exists");
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Username already exists!',
+                    });
+
                 }
             });
     };

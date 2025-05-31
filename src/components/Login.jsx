@@ -2,6 +2,10 @@ import { useState, useContext } from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import { UserContext } from "../App";
 import "./Login.css"
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
+const MySwal = withReactContent(Swal);
 
 function Login() {
     const [username, setUsername] = useState('');
@@ -19,7 +23,10 @@ function Login() {
                     setUser(users[0]);
                     navigate("/dashboard");
                 } else {
-                    alert('Invalid username or password!!!');
+                    MySwal.fire({
+                        icon: 'error',
+                        title: 'Invalid username or password!',
+                    });
                 }
             });
     };

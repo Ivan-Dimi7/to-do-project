@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import { FaArrowUp, FaArrowDown, FaTrash, FaPlus } from 'react-icons/fa';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import "./TaskGroup.css"
 
 const MySwal = withReactContent(Swal);
 
@@ -19,9 +20,6 @@ function TaskGroup(props){
         const { value: title } = await MySwal.fire({
             title: 'Enter title',
             input: 'text',
-            inputValidator: (value) => {
-                return null;
-            },
             showCancelButton: true,
         });
 
@@ -70,28 +68,20 @@ function TaskGroup(props){
 
     async function markAsDone(id) {
         const task = tasks.find((t) => t.id === id);
-        if (task && !task.done) {
-            const result = await MySwal.fire({
-                title: 'Once you mark tasks as done it cannot be undone! Are you sure?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
+        if (task) {
+            fetch(`http://localhost:3001/tasks/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ done: !task.done }),
+            }).then(() => {
+                const newTasks = tasks.map((t) =>
+                    t.id === id ? { ...t, done: !task.done } : t
+                );
+                setTasks(newTasks);
             });
-
-            if (result.isConfirmed) {
-                fetch(`http://localhost:3001/tasks/${id}`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ done: true }),
-                }).then(() => {
-                    const newTasks = tasks.map((t) =>
-                        t.id === id ? { ...t, done: true } : t
-                    );
-                    setTasks(newTasks);
-                });
-            }
         }
     }
+
 
 
 
@@ -112,17 +102,17 @@ function TaskGroup(props){
     }
 
     return (
-        <div>
-            <button onClick={addTask}>Add New Task</button>
+        <div id="tasks">
+            <button id="addTaskBtn" onClick={addTask}>Add New Task <FaPlus/></button>
             <ol>
                 {tasks.map((task, index) => (
                     <li key={task.id}>
-                       <span>
+                       <span id="taskStuff">
                            <Task title={task.title} />
-                           <input type="checkbox" checked={task.done} disabled={task.done} onChange={() => markAsDone(task.id)}/>
-                           <button class="deleteBtn" onClick={() => deleteTask(task.id)}> <FaTrash /> </button>
-                           <button class="upAndDownBtns" onClick={() => moveTaskUp(index)}> <FaArrowUp /> </button>
-                           <button class="upAndDownBtns" onClick={() => moveTaskDown(index)}> <FaArrowDown /></button>
+                           <input id="taskDone" type="checkbox" checked={task.done} onChange={() => markAsDone(task.id)}/>
+                           <button id="deleteTaskBtn" onClick={() => deleteTask(task.id)}> <FaTrash /> </button>
+                           <button className="upAndDownBtns" onClick={() => moveTaskUp(index)}> <FaArrowUp /> </button>
+                           <button className="upAndDownBtns" onClick={() => moveTaskDown(index)}> <FaArrowDown /></button>
                        </span>
 
                     </li>
