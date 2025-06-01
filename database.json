@@ -53,49 +53,29 @@
       "id": "68b2",
       "title": "chest",
       "done": false,
-      "taskGroupId": "ddbb"
+      "taskGroupId": "ddbb",
+      "position": 0
     },
     {
       "id": "51a0",
       "title": "cardio",
       "done": false,
-      "taskGroupId": "ddbb"
-    },
-    {
-      "id": "f0bb",
-      "title": "do the dishes",
-      "done": false,
-      "taskGroupId": "a422"
+      "taskGroupId": "ddbb",
+      "position": 1
     },
     {
       "id": "b8a0",
       "title": "laundry",
       "done": false,
-      "taskGroupId": "a422"
-    },
-    {
-      "id": "777a",
-      "title": "clean",
-      "done": false,
-      "taskGroupId": "a422"
-    },
-    {
-      "id": "46d6",
-      "title": "cheese",
-      "done": false,
-      "taskGroupId": "c81f"
+      "taskGroupId": "a422",
+      "position": 0
     },
     {
       "id": "8042",
       "title": "bread",
       "done": false,
-      "taskGroupId": "c81f"
-    },
-    {
-      "id": "76cf",
-      "title": "water",
-      "done": false,
-      "taskGroupId": "c81f"
+      "taskGroupId": "c81f",
+      "position": 1
     },
     {
       "id": "35ed",

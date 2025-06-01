@@ -11,7 +11,7 @@ function TaskGroup(props){
     const [tasks, setTasks] = useState([])
 
     useEffect(() => {
-        fetch(`http://localhost:3001/tasks?taskGroupId=${props.id}`)
+        fetch(`http://localhost:3001/tasks?taskGroupId=${props.id}&_sort=position`)
             .then(r => r.json())
             .then(setTasks);
     }, [props.id]);
@@ -28,6 +28,7 @@ function TaskGroup(props){
                 title,
                 done: false,
                 taskGroupId: props.id,
+                position: tasks.length,
             };
 
             fetch('http://localhost:3001/tasks', {
@@ -59,7 +60,11 @@ function TaskGroup(props){
             fetch(`http://localhost:3001/tasks/${id}`, {
                 method: 'DELETE',
             }).then(() => {
-                setTasks((lastTasks) => lastTasks.filter((task) => task.id !== id));
+                setTasks((lastTasks) => {
+                    const newTasks = lastTasks.filter((task) => task.id !== id);
+                    updateTaskPositions(newTasks);
+                    return newTasks;
+                });
             });
         }
     }
@@ -83,6 +88,15 @@ function TaskGroup(props){
     }
 
 
+    function updateTaskPositions(updatedTasks) {
+        updatedTasks.forEach((task, index) => {
+            fetch(`http://localhost:3001/tasks/${task.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ position: index }),
+            });
+        });
+    }
 
 
     function moveTaskUp(index) {
@@ -90,6 +104,7 @@ function TaskGroup(props){
             const newTasks = [...tasks];
             [newTasks[index], newTasks[index - 1]] = [newTasks[index - 1], newTasks[index]];
             setTasks(newTasks);
+            updateTaskPositions(newTasks);
         }
     }
 
@@ -98,6 +113,7 @@ function TaskGroup(props){
             const newTasks = [...tasks];
             [newTasks[index], newTasks[index + 1]] = [newTasks[index + 1], newTasks[index]];
             setTasks(newTasks);
+            updateTaskPositions(newTasks);
         }
     }
 
