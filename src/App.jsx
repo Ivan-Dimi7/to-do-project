@@ -1,6 +1,7 @@
 import Dashboard from "./components/Dashboard"
 import Register from "./components/Register";
 import Login from "./components/Login"
+import NavBar from "./components/NavBar";
 import { Routes, Route } from 'react-router-dom';
 import {createContext, useEffect, useState} from 'react';
 
@@ -21,6 +22,7 @@ function App() {
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
+            <NavBar />
             <Routes>
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/register" element={<Register />} />

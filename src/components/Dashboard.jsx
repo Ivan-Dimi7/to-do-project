@@ -89,8 +89,6 @@ function Dashboard() {
 
     return (
         <div className="dashboard-container">
-            <h1 className="dashboard-title">TO-DO LIST</h1>
-
             <div className="add-button-container">
                 <button id="addTaskGroupBtn" onClick={addTaskGroup}>
                     Add New Task Group <FaPlus />
