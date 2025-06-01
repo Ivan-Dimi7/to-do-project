@@ -18,24 +18,96 @@
   ],
   "taskGroups": [
     {
-      "id": "39bd",
-      "title": "a",
+      "id": "ddbb",
+      "title": "workout",
       "userId": "81da",
       "createdAt": "5/31/2025"
+    },
+    {
+      "id": "c81f",
+      "title": "shopping list",
+      "userId": "81da",
+      "createdAt": "5/31/2025"
+    },
+    {
+      "id": "a422",
+      "title": "chores",
+      "userId": "81da",
+      "createdAt": "5/31/2025"
+    },
+    {
+      "id": "3c80",
+      "title": "aaaaaa",
+      "userId": "81da",
+      "createdAt": "5/31/2025"
+    },
+    {
+      "id": "1cc1",
+      "title": "smth",
+      "userId": "5bc3",
+      "createdAt": "6/1/2025"
     }
   ],
   "tasks": [
     {
-      "id": "97f7",
-      "title": "a",
+      "id": "68b2",
+      "title": "chest",
       "done": false,
-      "taskGroupId": "39bd"
+      "taskGroupId": "ddbb"
     },
     {
-      "id": "81a3",
-      "title": "a",
+      "id": "51a0",
+      "title": "cardio",
       "done": false,
-      "taskGroupId": "39bd"
+      "taskGroupId": "ddbb"
+    },
+    {
+      "id": "f0bb",
+      "title": "do the dishes",
+      "done": false,
+      "taskGroupId": "a422"
+    },
+    {
+      "id": "b8a0",
+      "title": "laundry",
+      "done": false,
+      "taskGroupId": "a422"
+    },
+    {
+      "id": "777a",
+      "title": "clean",
+      "done": false,
+      "taskGroupId": "a422"
+    },
+    {
+      "id": "46d6",
+      "title": "cheese",
+      "done": false,
+      "taskGroupId": "c81f"
+    },
+    {
+      "id": "8042",
+      "title": "bread",
+      "done": false,
+      "taskGroupId": "c81f"
+    },
+    {
+      "id": "76cf",
+      "title": "water",
+      "done": false,
+      "taskGroupId": "c81f"
+    },
+    {
+      "id": "35ed",
+      "title": "aaa",
+      "done": false,
+      "taskGroupId": "1cc1"
+    },
+    {
+      "id": "d915",
+      "title": "ghghghgh",
+      "done": false,
+      "taskGroupId": "1cc1"
     }
   ]
 }
